@@ -1,0 +1,104 @@
+@import url(http://fonts.googleapis.com/css?family=Open+Sans);
+
+body {
+	margin:0;
+	padding:20px;
+	background-color:#EEE;
+	font-family: 'Open Sans', sans-serif;
+}
+
+h2, h3 {
+	text-align:center;
+}
+
+img {
+	max-width:100%;
+	height:auto;
+	display:block;
+	margin:20px auto;
+	transition: all 0.2s linear;
+	box-shadow:0 0 10px rgba(0,0,0,0.2);
+}
+
+img:hover {
+	box-shadow:0 0 15px rgba(0,0,0,0.4);
+}
+
+#images {
+	text-align:center;
+}
+
+#images img {
+	display:inline-block;
+	max-width:300px;
+	width:100%;
+	height:auto;
+	margin:20px;
+	vertical-align:middle;
+}
+
+form {
+	display:block;
+	margin: 20px auto;
+	width:400px;
+}
+
+input {
+	display:block;
+	box-sizing: border-box;
+	width:100%;
+	padding:5px;
+	margin-bottom:5px;
+	font-size: 16px;
+}
+
+#container {
+	width: 900px;
+	margin:20px auto;
+}
+
+input[type="submit"], .button {
+    border: 0;
+    box-sizing: border-box;
+	display:block;
+	padding:20px;
+	background-color:#673ab7;
+	color:#FFF;
+	text-decoration:none;
+	margin:40px auto;
+	transition: all 0.2s linear;
+	border-radius:5px;
+	text-align:center;
+    cursor:pointer;
+}
+
+input[type="submit"]:hover {
+	background-color:#9575cd;
+}
+
+.button {
+    max-width: 200px;
+    background-color: #888;
+}
+.button:hover {
+    background-color:#AAA;
+}
+
+@media all and (max-width: 700px) {
+    #images img {
+        margin: 20px auto;
+        display:block;
+    }
+}
+
+@media all and (max-width: 1000px) {
+	#container {
+		width:auto;
+	}
+}
+
+@media all and (max-width: 500px) {
+	form {
+		width:auto;
+	}
+}
