@@ -72,6 +72,46 @@ input[type="submit"], .button {
     cursor:pointer;
 }
 
+#viewed {
+	text-align:center;
+}
+
+.computer {
+	padding:20px;
+	margin:20px;
+	line-height:20px;
+	background-color:#FFF;
+	opacity:0.5;
+	display:inline-block;
+	box-shadow:0 0 10px rgba(0,0,0,0.2);
+}
+
+.computer:before {
+	content: "\2A2F";
+	display:inline-block;
+	margin-right:15px;
+	border:0;
+	font-size:20px;
+	transform: rotate(0);
+	width:15px;
+	height:15px;
+}
+
+.downloaded {
+	background-color:#AAF0AA;
+	opacity:1;
+}
+
+.downloaded:before {
+	content: "";
+	margin-right:15px;
+	width:5px;
+	height:10px;
+	border-right: 2px solid #000;
+	border-bottom: 2px solid #000;
+	transform: rotate(45deg);
+}
+
 input[type="submit"]:hover {
 	background-color:#9575cd;
 }
@@ -88,6 +128,13 @@ input[type="submit"]:hover {
     #images img {
         margin: 20px auto;
         display:block;
+    }
+    .computer {
+    	margin:10px;
+    	padding:10px;
+    }
+    .computer:before {
+    	margin-right:10px !important;
     }
 }
 

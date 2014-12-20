@@ -1,13 +1,14 @@
 #!/usr/bin/perl
 
-
 use CGI;
 use CGI::Carp qw(warningsToBrowser fatalsToBrowser);
-#use Image::Resize;
 use GD;
+use JSON;
 
 use warnings;
 use strict;
+
+my $json = JSON->new->allow_nonref;
 
 my $quality = 90;
 my $sizes = {
@@ -23,6 +24,7 @@ my $sizes = {
     }
 };
 
+my $readFile = "read.txt";
 my $credentials = do 'credentials.pl';
 
 my $query = new CGI;
@@ -50,7 +52,6 @@ sub resize {
             $mime = $2;
         }
 
-        #my $image = Image::Resize->new($file);
         my $img;
 
         if (lc($mime) eq "jpg" || lc($mime) eq "jpeg") {
@@ -169,7 +170,22 @@ if ($past) {
 		close($latestFile2);
 
         resize("full/$basename");
+
+        unlink $readFile or warn "Could not unlink $readFile: $!";
 	}
+
+    my $viewed;
+
+    if (-e "read.txt") {
+        open my $fh, '<', "read.txt" or die;
+        local $/ = undef;
+        my $data = <$fh>;
+        close $fh;
+
+        $viewed = $json->decode($data);
+    } else {
+        $viewed = {};
+    }
 
 
 	open my $latestFile, "<", "latest.txt" or die "Can't open latestFile: $!";
@@ -191,6 +207,12 @@ if ($past) {
         <div id='container'>
         <h2>Latest wallpaper:</h2>
         <a href='$latestUrl'><img src='images/$basename.jpg' /></a>
+        <div id='viewed'>";
+
+        print "<div class='computer" . ($viewed->{laptop}?" downloaded":"") . "'>Laptop</div>";
+        print "<div class='computer" . ($viewed->{desktop}?" downloaded":"") . "'>Desktop</div>";
+
+        print "</div>
         <h3>Add New</h3>
         <form method='post' enctype='multipart/form-data'>
         <input type='password' name='password' placeholder='Password' />
