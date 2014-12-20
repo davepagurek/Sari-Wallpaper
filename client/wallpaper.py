@@ -9,7 +9,7 @@ def random_string(size=6, chars=string.ascii_uppercase + string.digits):
 	return ''.join(random.choice(chars) for _ in range(size))
 
 #Get latest wallpaper from the web
-latest = urllib.urlopen("http://www.pahgawks.com/stuff/wallpaper/latest.txt")
+latest = urllib.urlopen("http://www.davepagurek.com/stuff/wallpaper/latest.txt")
 num = int(latest.readline() )
 url = latest.readline()
 
@@ -37,7 +37,7 @@ if update:
 	localpath = "C:\\w\\" + random_string()  + "\\" + random_string() + "\\" + random_string()
 	if not os.path.exists(localpath):
 		os.makedirs(localpath)
-	urllib.urlretrieve("http://www.pahgawks.com/stuff/wallpaper/" + url, localpath + "\\" + filename)
+	urllib.urlretrieve("http://www.davepagurek.com/stuff/wallpaper/" + url, localpath + "\\" + filename)
 
 	#Mark the number
 	current = open("current.txt", "w")
@@ -49,4 +49,4 @@ if update:
 
 	identity = open("identity.txt")
 	id = identity.readline()
-	latest = urllib.urlopen("http://www.pahgawks.com/stuff/wallpaper/read.pl?id=" + id)
+	read = urllib.urlopen("http://www.davepagurek.com/stuff/wallpaper/read.pl?id=" + id)
