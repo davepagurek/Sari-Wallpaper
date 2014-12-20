@@ -14,7 +14,7 @@ num = int(latest.readline() )
 url = latest.readline()
 
 #Isolate the filename from all the previous directories
-r = re.search(r'[\/\\]*([a-zA-Z0-9-_ ]*\.[a-z]+)$', url)
+r = re.search(r'[\/\\]*([a-zA-Z0-9-_ ]*\.[a-zA-Z]+)$', url)
 filename = r.group(1)
 
 #Check if the website's file is newer than ours
