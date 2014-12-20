@@ -1,6 +1,8 @@
 <h1>Sari-Wallpaper</h1>
 A joke I'm playing on my sister where I remotely change her wallpaper to pictures of me.
 
+See the past wallpapers and web interface here: http://davepagurek.com/stuff/wallpaper
+
 <h2>Client setup</h2>
 <ol>
   <li>Run <code>python setup.py py2exe</code> to create an exe to store on the client</li>
