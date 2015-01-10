@@ -87,7 +87,7 @@ input[type="submit"], .button {
 }
 
 .computer:before {
-	content: "\2A2F";
+	content: "\00D7";
 	display:inline-block;
 	margin-right:15px;
 	border:0;
