@@ -10,3 +10,8 @@ See the past wallpapers and web interface here: http://davepagurek.com/stuff/wal
   <li>Edit <code>client/identity.txt</code> to give a unique string to each client listening for wallpapers</li>
   <li>Open the Windows Task Scheduler and import <code>client/update_wallpaper.xml</code> to create scheduled tasks to update wallpapers. Edit the task's Action to the location you have <code>wallpaper.vbs</code> stored.</li>
 </ol>
+
+<h2>Server Setup</h2>
+<ol>
+    <li>Edit <code>server/credentials-example.pl</code> and change the contained string to the password to use for the upload server. Then, rename it to <code>server/credentials.pl</code>.</li>
+</ol>
