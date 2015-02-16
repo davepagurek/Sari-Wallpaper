@@ -1,6 +1,6 @@
-import ctypes
+from ctypes import *
 import os
-import urllib
+import urllib.request
 import random
 import string
 import re
@@ -9,9 +9,9 @@ def random_string(size=6, chars=string.ascii_uppercase + string.digits):
 	return ''.join(random.choice(chars) for _ in range(size))
 
 #Get latest wallpaper from the web
-latest = urllib.urlopen("http://www.davepagurek.com/stuff/wallpaper/latest.txt")
-num = int(latest.readline() )
-url = latest.readline()
+latest = urllib.request.urlopen("http://www.davepagurek.com/stuff/wallpaper/latest.txt")
+num = int(latest.readline().decode('utf-8') )
+url = latest.readline().decode('utf-8')
 
 #Isolate the filename from all the previous directories
 r = re.search(r'[\/\\]*([a-zA-Z0-9-_ ]*\.[a-zA-Z]+)$', url)
@@ -37,16 +37,24 @@ if update:
 	localpath = "C:\\w\\" + random_string()  + "\\" + random_string() + "\\" + random_string()
 	if not os.path.exists(localpath):
 		os.makedirs(localpath)
-	urllib.urlretrieve("http://www.davepagurek.com/stuff/wallpaper/" + url, localpath + "\\" + filename)
+	urllib.request.urlretrieve("http://www.davepagurek.com/stuff/wallpaper/" + url, localpath + "\\" + filename)
 
 	#Mark the number
 	current = open("current.txt", "w")
 	current.write(str(num) )
 
 	#Apply wallpaper
-	SPI_SETDESKWALLPAPER = 20
-	ctypes.windll.user32.SystemParametersInfoA(SPI_SETDESKWALLPAPER, 0, localpath + "\\" + filename , 0)
+	SPI_SETDESKWALLPAPER = 0x14
+	SPIF_UPDATEINIFILE   = 0x1
+
+	lpszImage = os.path.join(localpath + "\\", filename)
+	print(lpszImage)
+
+	SystemParametersInfo = windll.user32.SystemParametersInfoW
+	print(SystemParametersInfo(SPI_SETDESKWALLPAPER, 0, lpszImage, SPIF_UPDATEINIFILE))
+	#SPI_SETDESKWALLPAPER = 20
+	#ctypes.windll.user32.SystemParametersInfoA(SPI_SETDESKWALLPAPER, 0, localpath + "\\" + filename , 0)
 
 	identity = open("identity.txt")
 	id = identity.readline()
-	read = urllib.urlopen("http://www.davepagurek.com/stuff/wallpaper/read.pl?id=" + id)
+	read = urllib.request.urlopen("http://www.davepagurek.com/stuff/wallpaper/read.pl?id=" + id)
