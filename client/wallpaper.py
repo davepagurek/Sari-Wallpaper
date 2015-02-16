@@ -5,6 +5,9 @@ import random
 import string
 import re
 
+#change wallpaper even if it's not new
+FORCE = True
+
 def random_string(size=6, chars=string.ascii_uppercase + string.digits):
 	return ''.join(random.choice(chars) for _ in range(size))
 
@@ -17,11 +20,14 @@ url = latest.readline().decode('utf-8')
 r = re.search(r'[\/\\]*([a-zA-Z0-9-_ ]*\.[a-zA-Z]+)$', url)
 filename = r.group(1)
 
+filepath = ""
+
 #Check if the website's file is newer than ours
 update = False
 if os.path.isfile("current.txt"):
 	current = open("current.txt")
 	old_num = int(current.readline() )
+	filepath = current.readline()
 	
 	if num > old_num:
 		update = True
@@ -41,20 +47,25 @@ if update:
 
 	#Mark the number
 	current = open("current.txt", "w")
-	current.write(str(num) )
+	current.write(str(num) + "\n")
+	current.write(os.path.join(localpath + "\\", filename))
 
 	#Apply wallpaper
 	SPI_SETDESKWALLPAPER = 0x14
 	SPIF_UPDATEINIFILE   = 0x1
-
-	lpszImage = os.path.join(localpath + "\\", filename)
-	print(lpszImage)
-
 	SystemParametersInfo = windll.user32.SystemParametersInfoW
-	print(SystemParametersInfo(SPI_SETDESKWALLPAPER, 0, lpszImage, SPIF_UPDATEINIFILE))
-	#SPI_SETDESKWALLPAPER = 20
-	#ctypes.windll.user32.SystemParametersInfoA(SPI_SETDESKWALLPAPER, 0, localpath + "\\" + filename , 0)
+	SystemParametersInfo(SPI_SETDESKWALLPAPER, 0, os.path.join(localpath + "\\", filename), SPIF_UPDATEINIFILE)
+
 
 	identity = open("identity.txt")
 	id = identity.readline()
 	read = urllib.request.urlopen("http://www.davepagurek.com/stuff/wallpaper/read.pl?id=" + id)
+
+	
+elif (FORCE and len(filepath) > 0):
+	#Apply wallpaper
+	SPI_SETDESKWALLPAPER = 0x14
+	SPIF_UPDATEINIFILE   = 0x1
+	SystemParametersInfo = windll.user32.SystemParametersInfoW
+	SystemParametersInfo(SPI_SETDESKWALLPAPER, 0, filepath, SPIF_UPDATEINIFILE)
+

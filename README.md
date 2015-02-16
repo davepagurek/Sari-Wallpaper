@@ -5,7 +5,7 @@ See the past wallpapers and web interface here: http://davepagurek.com/stuff/wal
 
 <h2>Client setup</h2>
 <ol>
-  <li>Run <code>python setup.py py2exe</code> to create an exe to store on the client</li>
+  <li>Run <code>python setup.py py2exe</code> to create an exe to store on the client (using Python 3)</li>
   <li>Edit <code>client/wallpaper.vbs</code> to reflect the correct path to the generated exe</li>
   <li>Edit <code>client/identity.txt</code> to give a unique string to each client listening for wallpapers</li>
   <li>Open the Windows Task Scheduler and import <code>client/update_wallpaper.xml</code> to create scheduled tasks to update wallpapers. Edit the task's Action to the location you have <code>wallpaper.vbs</code> stored.</li>
