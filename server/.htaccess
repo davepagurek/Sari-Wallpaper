@@ -1,0 +1,2 @@
+AddHandler cgi-script .pl
+DirectoryIndex index.fcgi index.pl index.php index.html
