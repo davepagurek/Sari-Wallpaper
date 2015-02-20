@@ -15,4 +15,5 @@ See the past wallpapers and web interface here: http://davepagurek.com/stuff/wal
 <ol>
     <li>Edit <code>server/credentials-example.pl</code> and change the contained string to the password to use for the upload server. Then, rename it to <code>server/credentials.pl</code>.</li>
     <li>Copy all of <code>server/*</code> onto your hosting directory.</li>
+    <li>Make sure everything is <code>chmod 775</code> and <code>chown www-data:www-data</code></li>
 </ol>
