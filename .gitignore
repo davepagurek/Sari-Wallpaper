@@ -1,4 +1,5 @@
 server/credentials.pl
+server/config.pl
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
