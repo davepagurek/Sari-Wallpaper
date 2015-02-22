@@ -29,6 +29,7 @@ Since then, the surprise of having my wallpapers arrive has warn off, so the fun
 
 <h2>Server Setup</h2>
 <ol>
+  <li>Make sure the HTML::Template Perl module is installed by running <code>cpan install HTML::Templates</code></li>
   <li>Edit <code>server/config-example.pl</code> and change the password string to the password to use for the upload server. Change the devices you are listening for, corresponding to the contents of <code>client/identity.txt</code> earlier. Then, rename the file to <code>server/config.pl</code>.</li>
   <li>Copy all of the files from the <code>server</code> folder onto your hosting directory.</li>
   <li>Make sure everything is <code>chmod 775</code> and <code>chown www-data:www-data</code>.</li>
