@@ -1,7 +1,16 @@
 <h1>Sari-Wallpaper</h1>
+![Wallpaper changer web interface](http://www.davepagurek.com/content/images/2015/2/sari-wallpaper.png)
+
 A joke I'm playing on my sister where I remotely change her wallpaper to pictures of me.
 
 See the past wallpapers and web interface here: http://davepagurek.com/stuff/wallpaper
+
+<h2>The backstory</h2>
+So my sister is seven years younger than me. I thought it might be weird for her not having me in the house once I left for university so I decided to play this joke on her where I repeatedly change her wallpaper to pictures of me instead.
+
+I started first by changing her wallpaper while I was in the house, so she thought I was physically sneaking into her room at night to change her wallpaper. Passwords were changed but the wallpapers still arrived. I laid low for a week or so after going to Waterloo to lure her back into a false sense of security and then made the wallpapers come back with a vengeance.
+
+Since then, the surprise of having my wallpapers arrive has warn off, so the fun exists mostly in picking interesting photos and selfies to set her wallpaper to. I showed her how the whole thing works and she <a href="http://saripagurek.com/wallpaper/" target="_blank">implemented her own version</a> to change my dad's wallpapers.
 
 <h2>Client setup</h2>
 <h3>Windows</h3>
