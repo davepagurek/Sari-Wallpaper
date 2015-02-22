@@ -1,0 +1,4 @@
+{
+    recipient => "Joe",
+    password => "password"
+}

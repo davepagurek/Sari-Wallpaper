@@ -4,6 +4,7 @@ use CGI;
 use CGI::Carp qw(warningsToBrowser fatalsToBrowser);
 use GD;
 use JSON;
+use HTML::Template;
 
 use warnings;
 use strict;
@@ -25,21 +26,23 @@ my $sizes = {
 };
 
 my $readFile = "read.txt";
-my $credentials = do 'credentials.pl';
+my $config = do "config.pl";
+my $credentials = $config->{password};
+my $recipient = $config->{recipient};
 
 my $query = new CGI;
 print $query->header("text/html");
 
 
 sub get_sorted_files {
-	my $path = shift;
-	opendir my($dir), $path or die "can't opendir $path: $!";
-	my %hash = map {$_ => -(stat($_))[9] || undef} # avoid empty list
-		map  { "$path/$_" }
-		grep { m/.(jpg|png)/i }
-		readdir $dir;
-	closedir $dir;
-	return %hash;
+    my $path = shift;
+    opendir my($dir), $path or die "can't opendir $path: $!";
+    my %hash = map {$_ => -(stat($_))[9] || undef} # avoid empty list
+    map  { "$path/$_" }
+    grep { m/.(jpg|png)/i }
+    readdir $dir;
+    closedir $dir;
+    return %hash;
 }
 
 sub resize {
@@ -114,65 +117,66 @@ if ($query->param("make_thumbs")) {
 }
 if ($past) {
 
-	print "<html>
-	<head>
-	<title>Sari Wallpaper</title>
-	<meta name='viewport' content='width=device-width, initial-scale=1' />
-	<link rel='stylesheet' type='text/css' href='style.css' />
-	</head>
-	<body>
-	<div id='container'>
-	<h2>Past wallpapers</h2>
-	<div id='images'>";
-
-	my $path = "full";
-	my %files = get_sorted_files($path);
+    my $images = [];
+    my %files = get_sorted_files("full");
     foreach my $key (sort{$files{$a} <=> $files{$b}} keys %files) {
-
-        if ($key =~ /^$path\/(.*)\.(.*)$/) {
-            my $name = $1;
-            my $mime = $2;
-            print "<a href='full/$name.$mime'><img src='thumbnail/$name.jpg' /></a>\n";
+        if ($key =~ /^full\/(.*)\.(.*)$/) {
+            push(@{ $images }, {
+                name => $1,
+                mime => $2
+            });
         }
-	}
+    }
 
-	print "</div>
-	<a class='button' href='index.pl'>Back</a>
-	</div>
-	</body>
-	</html>";
+    my $template = HTML::Template->new(
+        filename => "templates/past.html",
+        die_on_bad_params =>  0
+    );
+
+    $template->param({
+        images => $images,
+        recipient => $recipient
+    });
+
+    print $template->output;
+
 
 } else {
-	my $password = $query->param('password');
-	my $file = $query->param('file');
-	my $filehandle = $query->upload("file");
-	if ($file && $filehandle && $password eq $credentials) {
-		my $basename = $file;
-		$basename =~ s/.*[\/\\](.*)/$1/;
+    my $password = $query->param('password');
+    my $file = $query->param('file');
+    my $filehandle = $query->upload("file");
+    if ($file && $filehandle && $password eq $credentials) {
+        my $basename = $file;
+        $basename =~ s/.*[\/\\](.*)/$1/;
 
-		binmode($filehandle);
+        binmode($filehandle);
 
-		open (my $OUTFILE,'>',"full/$basename");
-		while ( my $nBytes = read($filehandle, my $buffer, 1024) ) {
-			print $OUTFILE $buffer;
-		}
-		close($OUTFILE);
+        open (my $OUTFILE,'>',"full/$basename");
+        while ( my $nBytes = read($filehandle, my $buffer, 1024) ) {
+            print $OUTFILE $buffer;
+        }
+        close($OUTFILE);
 
-		open my $latestFile2, "<", "latest.txt" or die "Can't open latest.txt: $!";
-		my $latest = <$latestFile2>;
-		$latest++;
-		close($latestFile2);
+        my $latest = 0;
+        if (-e "latest.txt") {
+            open my $latestFile2, "<", "latest.txt" or die "Can't open latest.txt: $!";
+            $latest = <$latestFile2>;
+            $latest++;
+            close($latestFile2);
+        } else {
+            $latest = 1;
+        }
 
-		open $latestFile2, ">", "latest.txt" or die "Can't open latest.txt: $!";
-		print $latestFile2 $latest;
-		print $latestFile2 "\n";
-		print $latestFile2 "full/$basename";
-		close($latestFile2);
+        open my $latestFile2, ">", "latest.txt" or die "Can't open latest.txt: $!";
+        print $latestFile2 $latest;
+        print $latestFile2 "\n";
+        print $latestFile2 "full/$basename";
+        close($latestFile2);
 
         resize("full/$basename");
 
         unlink $readFile or warn "Could not unlink $readFile: $!";
-	}
+    }
 
     my $viewed;
 
@@ -187,43 +191,44 @@ if ($past) {
         $viewed = {};
     }
 
+    my $template = HTML::Template->new(
+        filename => "templates/current.html",
+        die_on_bad_params =>  0
+    );
 
-	open my $latestFile, "<", "latest.txt" or die "Can't open latestFile: $!";
+    if (-e "latest.txt") {
+        open my $latestFile, "<", "latest.txt" or die "Can't open latestFile: $!";
 
-	my $latest = <$latestFile>;
-	my $latestUrl = <$latestFile>;
-    if ($latestUrl =~ /^(.*)\.(.*)$/) {
-        my $url = $1;
-        my $mime = $2;
-        my $basename = $url;
-        $basename =~ s/.*[\/\\](.*)/$1/;
-        print "<html>
-        <head>
-        <title>Sari Wallpaper</title>
-        <meta name='viewport' content='width=device-width, initial-scale=1' />
-        <link rel='stylesheet' type='text/css' href='style.css' />
-        </head>
-        <body>
-        <div id='container'>
-        <h2>Latest wallpaper:</h2>
-        <a href='$latestUrl'><img src='images/$basename.jpg' /></a>
-        <div id='viewed'>";
+        my $latest = <$latestFile>;
+        my $latestUrl = <$latestFile>;
+        if ($latestUrl =~ /^(.*)\.(.*)$/) {
+            my $url = $1;
+            my $mime = $2;
+            my $basename = $url;
+            $basename =~ s/.*[\/\\](.*)/$1/;
 
-        print "<div class='computer" . ($viewed->{laptop}?" downloaded":"") . "'>Laptop</div>";
-        print "<div class='computer" . ($viewed->{desktop}?" downloaded":"") . "'>Desktop</div>";
+            my $devices = [];
+            for my $key (@{ $config->{devices} }) {
+                push(@{ $devices }, {
+                    device => $key,
+                    downloaded => $viewed->{$key}
+                });
+            }
 
-        print "</div>
-        <h3>Add New</h3>
-        <form method='post' enctype='multipart/form-data'>
-        <input type='password' name='password' placeholder='Password' />
-        <input type='file' name='file' />
-        <input type='submit' value='Upload' />
-        </form>
-        </div>
-        <a class='button' href='index.pl?past=true'>View past wallpapers</a>
-        </body>
-        </html>";
+            $template->param({
+                devices => $devices,
+                url => $latestUrl,
+                name => $basename,
+                recipient => $recipient
+            });
 
+        }
+    } else {
+        $template->param({
+            new => 1,
+            recipient => $recipient
+        });
     }
+    print $template->output;
 
 }

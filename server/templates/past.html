@@ -1,0 +1,18 @@
+<html>
+    <head>
+    <title><TMPL_VAR NAME="recipient"> Wallpaper</title>
+        <meta name='viewport' content='width=device-width, initial-scale=1' />
+        <link rel='stylesheet' type='text/css' href='style.css' />
+    </head>
+    <body>
+        <div id='container'>
+            <h2>Past wallpapers</h2>
+            <div id='images'>
+                <TMPL_LOOP NAME="images">
+                <a href='full/<TMPL_VAR NAME="name">.<TMPL_VAR NAME="mime">'><img src='thumbnail/<TMPL_VAR NAME="name">.jpg' /></a>
+                </TMPL_LOOP>
+            </div>
+            <a class='button' href='index.pl'>Back</a>
+        </div>
+    </body>
+</html>

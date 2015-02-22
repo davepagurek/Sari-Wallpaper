@@ -20,7 +20,8 @@ See the past wallpapers and web interface here: http://davepagurek.com/stuff/wal
 
 <h2>Server Setup</h2>
 <ol>
-  <li>Edit <code>server/credentials-example.pl</code> and change the contained string to the password to use for the upload server. Then, rename it to <code>server/credentials.pl</code>.</li>
-  <li>Copy all of <code>server/*</code> onto your hosting directory.</li>
-  <li>Make sure everything is <code>chmod 775</code> and <code>chown www-data:www-data</code></li>
+  <li>Edit <code>server/config-example.pl</code> and change the password string to the password to use for the upload server. Change the devices you are listening for, corresponding to the contents of <code>client/identity.txt</code> earlier. Then, rename the file to <code>server/config.pl</code>.</li>
+  <li>Copy all of the files from the <code>server</code> folder onto your hosting directory.</li>
+  <li>Make sure everything is <code>chmod 775</code> and <code>chown www-data:www-data</code>.</li>
+  <li>If you want to edit the visual styles of the server code, edit the files in <code>server/templates</code>. They use Perl HTML::Template syntax.</li>
 </ol>

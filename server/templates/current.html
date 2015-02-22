@@ -1,0 +1,40 @@
+<html>
+    <head>
+    <title><TMPL_VAR NAME="recipient"> Wallpaper</title>
+        <meta name='viewport' content='width=device-width, initial-scale=1' />
+        <link rel='stylesheet' type='text/css' href='style.css' />
+    </head>
+    <body>
+
+        <TMPL_UNLESS NAME="new">
+
+        <div id='container'>
+            <h2>Latest wallpaper:</h2>
+            <a href='<TMPL_VAR NAME="url">'><img src='images/<TMPL_VAR NAME="name">.jpg' /></a>
+            <div id='viewed'>
+                <TMPL_LOOP NAME="devices">
+                <div class='computer <TMPL_IF NAME="downloaded">downloaded</TMPL_IF>"'><TMPL_VAR NAME="device"></div>
+                </TMPL_LOOP>
+            </div>
+            <h3>Add New</h3>
+            <form method='post' enctype='multipart/form-data'>
+                <input type='password' name='password' placeholder='Password' />
+                <input type='file' name='file' />
+                <input type='submit' value='Upload' />
+            </form>
+        </div>
+        <a class='button' href='index.pl?past=true'>View past wallpapers</a>
+
+        <TMPL_ELSE>
+
+        <h2>Hey, there are no wallpapers yet!</h2>
+        <p align="center">Try uploading one! Remember to set a password in <strong>config.pl</strong> first.</p>
+        <form method='post' enctype='multipart/form-data'>
+            <input type='password' name='password' placeholder='Password' />
+            <input type='file' name='file' />
+            <input type='submit' value='Upload' />
+        </form>
+
+        </TMPL_UNLESS>
+</body>
+</html>
