@@ -25,9 +25,12 @@ filepath = ""
 #Check if the website's file is newer than ours
 update = False
 if os.path.isfile("current.txt"):
-    current = open("current.txt")
-    old_num = int(current.readline() )
-    filepath = current.readline()
+    try:
+        current = open("current.txt")
+        old_num = int(current.readline() )
+        filepath = current.readline()
+    except:
+        update = True
 
     if num > old_num:
         update = True
