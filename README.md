@@ -1,5 +1,5 @@
 <h1>Sari-Wallpaper</h1>
-![Wallpaper changer web interface](http://www.davepagurek.com/content/images/2015/2/sari-wallpaper.png)
+<img src="http://www.davepagurek.com/content/images/2015/2/sari-wallpaper.png" width="80%" />
 
 A joke I'm playing on my sister where I remotely change her wallpaper to pictures of me.
 
